@@ -1,0 +1,24 @@
+version: '3.7'
+
+# Production service and settings
+
+services:
+
+  mariadb:
+    volumes:
+      - ${MYSQL_DATA_DIR}/${MYSQL_DATA_DIR_DRUPAL}:/var/lib/mysql:cached
+
+  php:
+    environment:
+      PHP_FPM_CLEAR_ENV: "no"
+      PHP_SENDMAIL_PATH: /usr/sbin/sendmail -t -i -S opensmtpd:25
+
+  opensmtpd:
+    container_name: "${PROJECT_NAME}_opensmtpd"
+    image: wodby/opensmtpd:$OPENSMTPD_TAG
+    environment:
+      RELAY_HOST: "smtp.sparkpostmail.com"
+      RELAY_USER: "SMTP_Injection"
+      RELAY_PASSWORD: ""
+      # By default it utilizes TLS schema with port 587.
+      #RELAY_PORT: 2525

@@ -1,0 +1,10 @@
+# SSL certificates.
+!/certs/.gitkeep
+/certs/
+
+# Docker containers' storage.
+/.mysql/
+/.solr/
+
+# Environment overrides.
+/docker-compose.override.yml

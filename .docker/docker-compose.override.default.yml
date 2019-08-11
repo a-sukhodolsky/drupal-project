@@ -1,0 +1,57 @@
+version: '3.7'
+
+# Non-production service and settings
+
+services:
+
+  mariadb:
+    volumes:
+      # Comment this line to increase performance on MacOS (but db will be lost on restart).
+      - ${MYSQL_DATA_DIR}/${MYSQL_DATA_DIR_DRUPAL}:/var/lib/mysql:cached
+
+  php:
+    environment:
+      #PHP_SENDMAIL_PATH: /usr/sbin/sendmail -t -i -S mailhog:1025
+      #PHP_SENDMAIL_PATH: /usr/sbin/sendmail -t -i -S opensmtpd:25
+
+      # Read instructions at https://wodby.com/stacks/drupal/docs/local/xdebug/
+      #PHP_XDEBUG: 1 # <== Uncomment to enable xdebug, but it will impact the performance
+      PHP_XDEBUG_DEFAULT_ENABLE: 1
+      PHP_XDEBUG_REMOTE_CONNECT_BACK: 0
+      PHP_IDE_CONFIG: serverName=${PROJECT_NAME}
+      PHP_XDEBUG_REMOTE_HOST: host.docker.internal # Docker 18.03+ & Linux/Mac/Win
+      #PHP_XDEBUG_REMOTE_HOST: 172.17.0.1 # Linux, Docker < 18.03
+      #PHP_XDEBUG_REMOTE_HOST: 10.254.254.254 # macOS, Docker < 18.03
+      #PHP_XDEBUG_REMOTE_HOST: 10.0.75.1 # Windows, Docker < 18.03
+
+  mailhog:
+    image: mailhog/mailhog
+    container_name: "${PROJECT_NAME}_mailhog"
+    labels:
+      - 'traefik.backend=mailhog'
+      - 'traefik.port=8025'
+      - 'traefik.frontend.rule=Host:mailhog.${PROJECT_BASE_URL}'
+
+#  opensmtpd:
+#    container_name: "${PROJECT_NAME}_opensmtpd"
+#    image: wodby/opensmtpd:$OPENSMTPD_TAG
+#    environment:
+#      RELAY_HOST: "smtp.sparkpostmail.com"
+#      RELAY_USER: "SMTP_Injection"
+#      RELAY_PASSWORD: ""
+#      # By default it utilizes TLS schema with port 587.
+#      #RELAY_PORT: 2525
+
+#  traefik:
+#    ports:
+#      - "8000:80"
+#      - "44300:443"
+#      - "8081:8080"
+
+#  omgwtfssl:
+#    image: paulczar/omgwtfssl
+#    container_name: "${PROJECT_NAME}_ssl"
+#    environment:
+#      SSL_SUBJECT: ${PROJECT_BASE_URL}
+#    volumes:
+#      - ./certs:/certs
