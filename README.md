@@ -1,3 +1,22 @@
+
+
+Composer create-project command:
+```
+composer create-project a-sukhodolsky/drupal-project:8.x-dev --stability=dev --repository='{"type": "vcs","url": "https://github.com/a-sukhodolsky/drupal-project"}'
+```
+
+Then you can start the project in Docker with:
+```
+make up
+```
+
+After this you can view the site in a browser on http://drupal.test. Change 'drupal.test' to whatever you want and write it to /etc/hosts:
+```
+127.0.0.1 drupal.test www.drupal.test
+```
+
+### Original ReadMe from drupal-composer/drupal-project ###
+
 # Composer template for Drupal projects
 
 [![Build Status](https://travis-ci.org/drupal-composer/drupal-project.svg?branch=8.x)](https://travis-ci.org/drupal-composer/drupal-project)
