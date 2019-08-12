@@ -2,7 +2,7 @@
 
 * Composer create-project command:
 ```
-composer create-project a-sukhodolsky/drupal-project:8.x-dev my-drupal-project --stability=dev --no-install --no-interaction --repository='{"type": "vcs","url": "https://github.com/a-sukhodolsky/drupal-project"}'
+composer create-project a-sukhodolsky/drupal-project:8.x-nodejs-dev my-drupal-project --stability=dev --no-install --no-interaction --repository='{"type": "vcs","url": "https://github.com/a-sukhodolsky/drupal-project"}'
 ```
 
 * Initialize new git repo (it is required by scripts in scripts directory).
@@ -21,14 +21,20 @@ nano .env.default
 make up-php && make composer-install
 ```
 
+* Initialize Node.js application:
+```
+docker-compose run --rm nodejs sh -c "rm -rf * && npx create-react-app ."
+```
+
 * Then you can start the project in Docker with:
 ```
 make up
 ```
+Node.js may take a couple of minutes to start at first time.
 
-* After this you can view the site in a browser on http://drupal.test. Change 'drupal.test' to whatever you want and write it to /etc/hosts:
+* After this you can view the site in a browser on http://drupal.test and http://nodejs.drupal.test. Change 'drupal.test' to whatever you want and write it to /etc/hosts:
 ```
-127.0.0.1 drupal.test www.drupal.test
+127.0.0.1 drupal.test www.drupal.test nodejs.drupal.test
 ```
 
 #*Original ReadMe from drupal-composer/drupal-project*
