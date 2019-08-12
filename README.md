@@ -1,25 +1,39 @@
 
 
-Composer create-project command:
+* Composer create-project command:
 ```
-composer create-project a-sukhodolsky/drupal-project:8.x-dev --stability=dev --repository='{"type": "vcs","url": "https://github.com/a-sukhodolsky/drupal-project"}'
+composer create-project a-sukhodolsky/drupal-project:8.x-dev my-drupal-project --stability=dev --no-install --no-interaction --repository='{"type": "vcs","url": "https://github.com/a-sukhodolsky/drupal-project"}'
 ```
 
-Then you can start the project in Docker with:
+* Initialize new git repo (it is required by scripts in scripts directory).
+```
+cd my-drupal-project && git init
+```
+
+* Edit .env.default file if you want to change default project name or url (drupal.test), or versions of containers.
+.env.default is used to create .env file in case case it does not exist.
+```
+nano .env.default
+```
+
+* Complete the installation of Drupal codebase:
+```
+make up-php && make composer-install
+```
+
+* Then you can start the project in Docker with:
 ```
 make up
 ```
 
-After this you can view the site in a browser on http://drupal.test. Change 'drupal.test' to whatever you want and write it to /etc/hosts:
+* After this you can view the site in a browser on http://drupal.test. Change 'drupal.test' to whatever you want and write it to /etc/hosts:
 ```
 127.0.0.1 drupal.test www.drupal.test
 ```
 
-### Original ReadMe from drupal-composer/drupal-project ###
+#*Original ReadMe from drupal-composer/drupal-project*
 
 # Composer template for Drupal projects
-
-[![Build Status](https://travis-ci.org/drupal-composer/drupal-project.svg?branch=8.x)](https://travis-ci.org/drupal-composer/drupal-project)
 
 This project template provides a starter kit for managing your site
 dependencies with [Composer](https://getcomposer.org/).
