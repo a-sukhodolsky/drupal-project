@@ -33,6 +33,21 @@ services:
     volumes:
       - ../:/var/www/html:cached
 
+  nodejs:
+    image: wodby/node:${NODEJS_TAG}
+    container_name: "${PROJECT_NAME}_nodejs"
+    user: "node"
+    working_dir: /home/node/app
+    environment:
+      NODE_ENV: production
+    volumes:
+      - ../nodejs/app:/home/node/app
+    labels:
+      - 'traefik.backend=${PROJECT_NAME}_nodejs'
+      - 'traefik.port=3000'
+      - 'traefik.frontend.rule=Host:nodejs.${PROJECT_BASE_URL}'
+    command: sh -c 'npm install && npm run start'
+
   nginx:
     image: wodby/nginx:$NGINX_TAG
     container_name: "${PROJECT_NAME}_nginx"
